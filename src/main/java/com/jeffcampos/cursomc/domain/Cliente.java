@@ -7,20 +7,34 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 import com.jeffcampos.cursomc.domain.enums.TipoCliente;
 
+@Entity
 public class Cliente implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private Integer id;
+	@Id
 	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	private String nome;
-	private String mail;
+	private String email;
 	private String cpfOuCnpj;
 	private Integer tipo;
-
+	
+	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
-
+	
+	@ElementCollection
+	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 
 	public Cliente() {
@@ -30,7 +44,7 @@ public class Cliente implements Serializable {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.mail = mail;
+		this.email = mail;
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = tipo.getCod();
 	}
@@ -51,12 +65,12 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getMail() {
-		return mail;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setEmail(String mail) {
+		this.email = mail;
 	}
 
 	public String getCpfOuCnpj() {
